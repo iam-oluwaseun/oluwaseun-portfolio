@@ -1,0 +1,51 @@
+name: CI/CD to AKS
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Derive ACR_NAME and keep login server from secret
+    - name: Resolve ACR name
+      id: acr
+      run: |
+        ACR_LOGIN_SERVER="${{ secrets.AZURE_CONTAINER_REGISTRY }}"   # e.g. oluwaseunportfoliodevacr.azurecr.io
+        ACR_NAME="$(echo "$ACR_LOGIN_SERVER" | cut -d. -f1)"
+        echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> $GITHUB_ENV
+        echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+
+    - name: Login to ACR
+      run: az acr login --name "$ACR_NAME"
+
+    - name: Build image
+      run: |
+        IMAGE="${{ env.ACR_LOGIN_SERVER }}/oluwaseun-portfolio:${{ github.sha }}"
+        echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+        docker build -t "$IMAGE" .
+
+    - name: Push image
+      run: docker push "${{ env.IMAGE }}"
+
+    - name: Get AKS credentials
+      run: |
+        az aks get-credentials \
+          -g "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+          -n "${{ secrets.AZURE_AKS_CLUSTER }}" \
+          --overwrite-existing
+
+    - name: Roll out new image
+      run: |
+        kubectl set image deployment/oluwaseun-portfolio web="${{ env.IMAGE }}"
+        kubectl rollout status deployment/oluwaseun-portfolio

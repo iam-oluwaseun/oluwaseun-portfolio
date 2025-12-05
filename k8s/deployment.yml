@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oluwaseun-portfolio
+  labels:
+    app: oluwaseun-portfolio
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: oluwaseun-portfolio
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: oluwaseun-portfolio
+    spec:
+      containers:
+        - name: web
+          image: oluwaseunportfoliodevacr.azurecr.io/oluwaseun-portfolio:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10

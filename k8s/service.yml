@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oluwaseun-portfolio
+  labels:
+    app: oluwaseun-portfolio
+spec:
+  type: LoadBalancer
+  selector:
+    app: oluwaseun-portfolio
+  ports:
+    - port: 80
+      targetPort: 80
