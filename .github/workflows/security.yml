@@ -13,27 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # Resolve ACR name & login server from secret
-      - name: Resolve ACR name
-        id: acr
-        run: |
-          ACR_LOGIN_SERVER="${{ secrets.AZURE_CONTAINER_REGISTRY }}"   # e.g. oluwaseunportfoliodevacr.azurecr.io
-          ACR_NAME="$(echo "$ACR_LOGIN_SERVER" | cut -d. -f1)"
-          echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> $GITHUB_ENV
-          echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
-
-      - name: ACR login
-        run: az acr login --name "$ACR_NAME"
-
-      - name: Run Trivy vulnerability scanner (image)
+      # Trivy filesystem scan (no ACR / Docker needed)
+      - name: Run Trivy vulnerability scanner (filesystem)
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ${{ env.ACR_LOGIN_SERVER }}/oluwaseun-portfolio:${{ github.sha }}
+          scan-type: fs
+          input: .
           format: 'table'
           vuln-type: 'os,library'
           severity: 'HIGH,CRITICAL'
@@ -61,10 +46,9 @@ jobs:
           to: oluwaseunopebiyi@gmail.com
           from: oluwaseunopebiyi@gmail.com
           body: |
-            ✅ Trivy and SonarCloud scans completed successfully for commit: ${{ github.sha }}
+            ✅ Trivy (filesystem) and SonarCloud scans completed successfully for commit: ${{ github.sha }}
 
-            🔍 Trivy scanned image:
-                ${{ env.ACR_LOGIN_SERVER }}/oluwaseun-portfolio:${{ github.sha }}
+            🔍 Trivy scanned the repository files (Dockerfile, dependencies, etc.)
 
             🔎 SonarCloud project:
                 https://sonarcloud.io/project/overview?id=${{ secrets.SONAR_PROJECT_KEY }}
