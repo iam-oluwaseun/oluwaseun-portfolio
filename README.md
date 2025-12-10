@@ -55,7 +55,55 @@ A modern, responsive portfolio website showcasing Oluwaseun O. Opebiyi's cloud e
 
 ## 🚀 Deployment
 
-The site is designed to be deployed on any static hosting platform:
+### Docker Deployment
+
+Build and run with Docker:
+```bash
+docker build -t oluwaseun-portfolio .
+docker run -p 8080:80 oluwaseun-portfolio
+```
+
+See [BUILD_AND_RUN.md](./BUILD_AND_RUN.md) for detailed Docker commands.
+
+### Azure Kubernetes Service (AKS) Deployment
+
+This project includes complete infrastructure and deployment automation:
+
+1. **Deploy Infrastructure** (Terraform):
+   ```bash
+   cd infra/terraform/envs/dev
+   terraform init
+   terraform plan
+   terraform apply
+   ```
+
+2. **Set up ACR Secret**:
+   ```bash
+   chmod +x k8s/setup-acr-secret.sh
+   ./k8s/setup-acr-secret.sh <acr-name> <resource-group>
+   ```
+
+3. **Deploy to AKS**:
+   ```bash
+   kubectl apply -f k8s/deployment.yml
+   kubectl apply -f k8s/service.yml
+   ```
+
+4. **Get External IP**:
+   ```bash
+   kubectl get service oluwaseun-portfolio
+   ```
+
+### CI/CD Pipeline
+
+Automated deployment via GitHub Actions:
+- **Trigger**: Push to `main` branch
+- **Process**: Build → Scan → Push to ACR → Deploy to AKS
+- **Security**: Trivy + SonarCloud scans
+
+See [NEXT_STEPS.md](./NEXT_STEPS.md) for complete deployment guide.
+
+### Alternative Hosting Options
 
 - **Netlify**: Connect your repository for automatic deployments
 - **Vercel**: Deploy with zero configuration
