@@ -20,7 +20,7 @@ This project demonstrates enterprise-level DevOps practices:
 - **Grafana Dashboard**: http://<GRAFANA_EXTERNAL_IP> (after `monitoring.sh`)
 - **Architecture**: See `docs/architecture.md`
 
-## 🏗️ Project Architecturee
+## 🏗️ Project Architecture
 
 Developer (React)
 ↓ git push
