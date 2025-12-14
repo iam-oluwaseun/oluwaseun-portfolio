@@ -17,6 +17,19 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Set Azure subscription
+      run: |
+        # Extract subscription ID from AZURE_CREDENTIALS if needed
+        SUBSCRIPTION_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.subscriptionId // empty')
+        if [ -n "$SUBSCRIPTION_ID" ]; then
+          az account set --subscription "$SUBSCRIPTION_ID"
+        fi
+        echo "Current Azure subscription:"
+        az account show --output table
+        echo ""
+        echo "Available resource groups:"
+        az group list --query "[].{Name:name, Location:location}" --output table
+
     # Derive ACR_NAME and keep login server from secret
     - name: Resolve ACR name
       id: acr
@@ -38,12 +51,23 @@ jobs:
     - name: Push image
       run: docker push "${{ env.IMAGE }}"
 
+    - name: Verify AKS cluster exists
+      run: |
+        echo "Checking AKS cluster: ${{ secrets.AZURE_AKS_CLUSTER }} in resource group: ${{ secrets.AZURE_RESOURCE_GROUP }}"
+        az aks show \
+          --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+          --name "${{ secrets.AZURE_AKS_CLUSTER }}" \
+          --query "{Name:name, ResourceGroup:resourceGroup, Status:provisioningState}" \
+          --output table
+
     - name: Get AKS credentials
       run: |
         az aks get-credentials \
-          -g "${{ secrets.AZURE_RESOURCE_GROUP }}" \
-          -n "${{ secrets.AZURE_AKS_CLUSTER }}" \
-          --overwrite-existing
+          --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+          --name "${{ secrets.AZURE_AKS_CLUSTER }}" \
+          --overwrite-existing \
+          --format azure
+        kubectl get nodes
 
     - name: Roll out new image
       run: |
