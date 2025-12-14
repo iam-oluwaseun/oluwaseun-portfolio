@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: oluwaseunportfoliodevacr.azurecr.io/oluwaseun-portfolio:v1
+          image: oluwaseunportfoliodevacr.azurecr.io/oluwaseun-portfolio-app:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
