@@ -100,7 +100,7 @@ const About = () => {
               {/* Image Container */}
               <div className="relative">
                 <img 
-                  src="/profile picture.jpg" 
+                  src="/profile%20picture.jpg" 
                   alt="Oluwaseun O. Opebiyi" 
                   className="w-80 h-80 object-cover rounded-2xl border-2 border-cyan/30 group-hover:border-cyan/60 transition-all duration-300 shadow-lg hover:shadow-cyan/25"
                 />
