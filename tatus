@@ -1,0 +1,26 @@
+[1mdiff --git a/src/components/About.js b/src/components/About.js[m
+[1mindex 9b1eb39..3b1fefa 100644[m
+[1m--- a/src/components/About.js[m
+[1m+++ b/src/components/About.js[m
+[36m@@ -100,7 +100,7 @@[m [mconst About = () => {[m
+               {/* Image Container */}[m
+               <div className="relative">[m
+                 <img [m
+[31m-                  src="/profile%20picture.jpg" [m
+[32m+[m[32m                  src="/profile picture.jpg"[m[41m [m
+                   alt="Oluwaseun O. Opebiyi" [m
+                   className="w-80 h-80 object-cover rounded-2xl border-2 border-cyan/30 group-hover:border-cyan/60 transition-all duration-300 shadow-lg hover:shadow-cyan/25"[m
+                 />[m
+[1mdiff --git a/src/components/Hero.js b/src/components/Hero.js[m
+[1mindex 11fece3..c7c4257 100644[m
+[1m--- a/src/components/Hero.js[m
+[1m+++ b/src/components/Hero.js[m
+[36m@@ -4,7 +4,7 @@[m [mconst Hero = () => {[m
+   return ([m
+     <section [m
+       className="relative h-screen flex items-center justify-center bg-cover bg-center overflow-hidden"[m
+[31m-      style={{ backgroundImage: "url('/new%20background%20image.jpg')" }}[m
+[32m+[m[32m      style={{ backgroundImage: "url('/new background image.jpg')" }}[m
+     >[m
+       {/* Dark Overlay */}[m
+       <div className="absolute inset-0 bg-black/70"></div>[m
