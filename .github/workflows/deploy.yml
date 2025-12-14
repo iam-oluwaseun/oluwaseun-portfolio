@@ -31,7 +31,7 @@ jobs:
 
     - name: Build image
       run: |
-        IMAGE="${{ env.ACR_LOGIN_SERVER }}/oluwaseun-portfolio:${{ github.sha }}"
+        IMAGE="${{ env.ACR_LOGIN_SERVER }}/oluwaseun-portfolio-app:${{ github.sha }}"
         echo "IMAGE=$IMAGE" >> $GITHUB_ENV
         docker build -t "$IMAGE" .
 
