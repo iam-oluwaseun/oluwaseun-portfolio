@@ -1,407 +1,465 @@
-# Oluwaseun O. Opebiyi — DevOps Portfolio
+# Oluwaseun O. Opebiyi — End-to-End DevOps Portfolio
 
-A modern, responsive portfolio website showcasing Oluwaseun O. Opebiyi's cloud engineering and DevOps expertise. Built with React + Tailwind CSS and deployed to Azure Kubernetes Service (AKS) with full infrastructure-as-code, containerization, CI/CD automation, and production monitoring.
+A modern, production-ready portfolio website demonstrating **real-world DevOps and Cloud Engineering practices**. The application is built with **React + Tailwind CSS** and deployed on **Azure Kubernetes Service (AKS)** using **Infrastructure as Code, containerization, CI/CD automation, monitoring, and security best practices**.
+
+---
+
+## 💡 Why This Project?
+
+This project was created to go beyond tutorials and labs and instead simulate how a **real DevOps team** would design, deploy, secure, and operate a production application in the cloud.
+
+**Key goals:**
+
+* Design and deploy a scalable frontend application on Kubernetes
+* Provision Azure infrastructure using Terraform (IaC)
+* Automate build, security scanning, and deployment with CI/CD
+* Implement monitoring, alerting, and secure secrets management
+
+This portfolio reflects how I would approach real-world deployments as a **Junior DevOps / Cloud Engineer**.
+
+---
 
 ## 🎯 Project Overview
 
 This project demonstrates enterprise-level DevOps practices:
-- **Frontend**: React 18 with Tailwind CSS (responsive, modern design)
-- **Containerization**: Docker multi-stage build for minimal image size
-- **Infrastructure**: Terraform modules provisioning AKS, ACR, Key Vault, Storage
-- **Orchestration**: Kubernetes deployment with rolling updates
-- **CI/CD**: GitHub Actions automated build, test, scan, and deploy
-- **Monitoring**: Prometheus + Grafana for metrics and Alertmanager for alerts
-- **Security**: Image scanning (Trivy), code quality (SonarCloud), secrets management
+
+* **Frontend**: React 18 with Tailwind CSS (responsive, modern UI)
+* **Containerization**: Docker multi-stage builds for minimal image size
+* **Infrastructure**: Terraform modules provisioning AKS, ACR, Key Vault, Storage
+* **Orchestration**: Kubernetes deployments with rolling updates
+* **CI/CD**: GitHub Actions for automated build, scan, push, and deploy
+* **Monitoring**: Prometheus, Grafana, and Alertmanager
+* **Security**: Trivy image scanning, SonarCloud code analysis, secrets management
+
+---
+
+## 🧠 Skills Demonstrated
+
+* Azure Cloud (AKS, ACR, Key Vault, Storage Accounts)
+* Infrastructure as Code with Terraform
+* Docker containerization and image optimisation
+* Kubernetes deployments, services, and namespaces
+* CI/CD automation using GitHub Actions
+* Monitoring and alerting with Prometheus and Grafana
+* Secure secrets management and vulnerability scanning
+* Linux, Bash scripting, and YAML configuration
+
+---
 
 ## 📚 Quick Links
 
-- **Live Site**: http://<YOUR_AKS_EXTERNAL_IP> (assigned after deployment)
-- **GitHub Repo**: https://github.com/iam-oluwaseun/oluwaseun-portfolio
-- **Grafana Dashboard**: http://<GRAFANA_EXTERNAL_IP> (after `monitoring.sh`)
-- **Architecture**: See `docs/architecture.md`
+* **GitHub Repository**: [https://github.com/iam-oluwaseun/oluwaseun-portfolio](https://github.com/iam-oluwaseun/oluwaseun-portfolio)
+* **Live Site**: Available after AKS LoadBalancer external IP assignment
+* **Grafana Dashboard**: Available after monitoring stack deployment
+
+---
 
 ## 🏗️ Project Architecture
 
+```
 Developer (React)
 ↓ git push
-GitHub Actions (Build → Scan → Push Image)
+GitHub Actions (Build → Scan → Push → Deploy)
 ↓ docker push
 Azure Container Registry (ACR)
 ↓ pull image
 AKS Cluster
 ├─ App Namespace: Deployment + Service (LoadBalancer)
 └─ Monitoring Namespace: Prometheus + Grafana + Alertmanager
+```
 
-┌────────────────────────────────────────────────────────┐
-│                   GitHub Repository                    │
-│                     (Source Code)                      │
-└───────────────▲───────────────────────────▲────────────┘
-                │                           │
-                │ Code Push                 │ CI/CD Pipeline
-                │                           │
-        ┌───────┴────────┐          ┌───────┴───────────────┐
-        │   Terraform     │          │   GitHub Actions      │
-        │   (IaC)         │          │   (Build → Scan →     │
-        └───────┬────────┘          │    Push → Deploy)     │
-                │                   └───────────▲────────────┘
-                │ terraform apply                │ kubectl apply
-                ▼                                ▼
-      ┌─────────────────┐            ┌────────────────────────────┐
-      │ Azure Resources │            │ AKS Kubernetes Cluster      │
-      │ (RG, ACR, AKS)  │            │ (Pods, Services, Ingress)  │
-      └───────┬────────┘            └───────────┬────────────────┘
-              │                                  │ Metrics
-              ▼                                  ▼
-      ┌──────────────────────┐        ┌────────────────────────────┐
-      │ Azure Container      │        │ Prometheus + Grafana       │
-      │ Registry (ACR)       │        │ (Monitoring + Alerts)      │
-      └──────────────────────┘        └────────────────────────────┘
+### Detailed Flow
 
+```
+┌───────────────────────────────────────────────┐
+│               GitHub Repository               │
+│                 (Source Code)                 │
+└───────────────▲───────────────────────────────┘
+                │
+                │ Code Push
+                ▼
+        ┌────────────────────┐
+        │  GitHub Actions     │
+        │ Build → Scan →      │
+        │ Push → Deploy       │
+        └───────────▲────────┘
+                    │ kubectl
+                    ▼
+          ┌────────────────────────┐
+          │ AKS Kubernetes Cluster │
+          │ Pods, Services         │
+          └───────────▲────────────┘
+                      │ Metrics
+                      ▼
+          ┌────────────────────────┐
+          │ Prometheus & Grafana   │
+          │ Monitoring & Alerts    │
+          └────────────────────────┘
+```
 
+---
 
 ## 🚀 Tech Stack
 
 ### Frontend
-- **React** 18.2.0
-- **Tailwind CSS** 3.1.6
-- **Create React App** (build tool)
+
+* React 18
+* Tailwind CSS
+* Create React App (used for simplicity and rapid setup)
 
 ### Infrastructure & DevOps
-- **Terraform**: Infrastructure as Code (AKS, ACR, Key Vault, Storage, RG)
-- **Kubernetes (AKS)**: Container orchestration
-- **Helm**: Package manager for Prometheus stack
-- **Docker**: Multi-stage containerization
-- **GitHub Actions**: CI/CD pipeline
 
-### Monitoring & Alerts
-- **Prometheus**: Metrics collection
-- **Grafana**: Metrics visualization & dashboards
-- **Alertmanager**: Alert routing (email, Slack, PagerDuty)
-- **kube-prometheus-stack**: Helm chart bundling all three
+* Terraform (Azure IaC)
+* Azure Kubernetes Service (AKS)
+* Azure Container Registry (ACR)
+* Docker (multi-stage builds)
+* Helm (monitoring stack)
+* GitHub Actions (CI/CD)
 
-### Security & Scanning
-- **Trivy**: Container image vulnerability scanning
-- **SonarCloud**: Code quality and security scanning (optional)
-- **Azure Key Vault**: Secrets management
-- **GitHub Secrets**: CI credentials
+### Monitoring & Security
+
+* Prometheus
+* Grafana
+* Alertmanager
+* Trivy (image scanning)
+* SonarCloud (code quality)
+* Azure Key Vault & GitHub Secrets
+
+---
 
 ## 📦 Local Development
 
 ### Prerequisites
-- Node.js 16+ and npm
-- Docker (optional, for local container testing)
 
-### Setup & Run Locally
+* Node.js 16+
+* npm
+* Docker (optional)
 
-1. **Install dependencies**:
+### Run Locally
+
    ```bash
-2   npm install
-Start development server (http://localhost:3000):
+npm install
     npm start
-3  Run tests: 
-   npm test    
-4  Build for production:
+```
+
+App runs at: [http://localhost:3000](http://localhost:3000)
+
+### Build for Production
+
+```bash
    npm run build 
+```
 
-Docker Build & Run
-Build locally
+---
 
+## 🐳 Docker
+
+### Build Image
+
+```bash
 docker build -t oluwaseun-portfolio:local . 
-Run container locally
+```
 
-docker run -d -p 8080:80 --name oluwaseun-portfolio oluwaseun-portfolio:local
-# Open: http://localhost:8080
+### Run Container
 
-View logs
-docker logs -f oluwaseun-portfolio
+```bash
+docker run -d -p 8080:80 oluwaseun-portfolio:local
+```
 
-Stop container
-docker stop oluwaseun-portfolio
+Open: [http://localhost:8080](http://localhost:8080)
 
-🏗️ Infrastructure Setup (Terraform)
-Prerequisites
-Azure CLI: az login
-Terraform v1.3+
-Subscription with Contributor/Owner role
+---
 
-Deploy Infrastructure
-cd infra/terraform
+## 🏗️ Infrastructure Setup (Terraform)
 
-# Initialize
+### Prerequisites
+
+* Azure CLI (`az login`)
+* Terraform v1.3+
+
+### Deploy Infrastructure
+
+```bash
+cd infra/terraform/envs/dev
 terraform init
-
-# Validate & preview
 terraform plan -out=tfplan
-
-# Apply
 terraform apply tfplan
+```
 
-# Show outputs
-terraform output
+### Resources Created
 
-Resource Created
-Resource Group: oluwaseun-portfolio-dev-rg
-AKS Cluster: oluwaseun-portfolio-dev-aks (2 nodes, configurable)
-ACR: oluwaseunportfoliodevacr.azurecr.io (private container registry)
-Key Vault: For secrets
-Storage Account: For backups/logs
+* Resource Group
+* AKS Cluster
+* Azure Container Registry
+* Azure Key Vault
+* Storage Account (state/logs)
 
-🐳 4. Dockerize Portfolio App
- Build Image
-docker build -t portfolio-app:v1 .
+---
 
-Run Locally
- docker run -p 8080:80 portfolio-app:v1
+## ☸️ Kubernetes Deployment
 
-Tag for ACR
-docker tag portfolio-app:v1 <ACR_NAME>.azurecr.io/portfolio-app:v1
+### Deployment Strategy
 
-Push to ACR
-docker push <ACR_NAME>.azurecr.io/portfolio-app:v1
+The application uses **Rolling Update** strategy for zero-downtime deployments:
 
-☸️ Kubernetes Deployment
-Prerequisites
-kubectl
-AKS cluster created (via Terraform)
-Docker image pushed to ACR
+* **Replicas**: 2 pods for high availability
+* **Rolling Update**: Gradual replacement of old pods with new ones
+* **Health Checks**: Liveness and readiness probes ensure pod health
+* **Automatic Rollback**: Failed deployments automatically revert
 
-Get AKS Credentials
+### Deploy to AKS
+
+**1. Get AKS Credentials:**
+```bash
 az aks get-credentials \
   -g oluwaseun-portfolio-dev-rg \
   -n oluwaseun-portfolio-dev-aks \
   --overwrite-existing
+```
 
-  Deploy App to AKS
+**2. Apply Kubernetes Manifests:**
+```bash
 kubectl apply -f k8s/deployment.yml
 kubectl apply -f k8s/service.yml
+```
 
-# Check status
-kubectl get pods,svc
+**3. Verify Deployment:**
+```bash
+# Check pod status
+kubectl get pods -l app=oluwaseun-portfolio
 
-Get External IP
-kubectl get svc oluwaseun-portfolio -w
-# Wait for EXTERNAL-IP to appear
+# Check service
+kubectl get svc oluwaseun-portfolio
 
-Access the App
-Open http://<EXTERNAL-IP> in your browser.
+# View deployment details
+kubectl describe deployment oluwaseun-portfolio
 
-Targets
-🔄 CI/CD Pipeline (GitHub Actions)
-Workflow Triggers
-Pipeline stages:
-1.Checkout Code
-2.SonarCloud Scan
-3.Trivy Security Scan
-4.Build Docker Image
-5.Push to ACR
-6.Deploy to AKS via kubectl
+# Monitor rollout
+kubectl rollout status deployment/oluwaseun-portfolio
+```
 
-📊 Monitoring & Alerts Setup
-Install Monitoring Stack (Prometheus + Grafana)
-Quick Install (with defaults)
-GRAFANA_PASSWORD="YourStrongPassword!" ./k8s/monitoring.sh
+### Deployment Features
 
-Custom Install (with SMTP config)
-export GRAFANA_PASSWORD="YourStrongPassword!"
-export GMAIL_APP_PASSWORD="your-16-char-app-password"
+* **Health Probes**: 
+  * Liveness probe: Checks if container is running (every 10s)
+  * Readiness probe: Checks if container is ready to serve traffic (every 5s)
+  
+* **Resource Management**:
+  * CPU: 100m request, 250m limit
+  * Memory: 64Mi request, 128Mi limit
+  
+* **Service Configuration**:
+  * Type: LoadBalancer (external access)
+  * Port: 80 (HTTP)
+  * Target Port: 80 (container port)
 
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
+### Rollout Verification
 
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
-  --namespace monitoring --create-namespace \
-  --values ./k8s/values.yaml \
-  --set grafana.service.type=LoadBalancer \
-  --set grafana.adminPassword="$GRAFANA_PASSWORD" \
-  --set alertmanager.config.receivers[0].email_configs[0].auth_password="$GMAIL_APP_PASSWORD"
+After deployment, the system automatically:
+1. Checks pod health via readiness probes
+2. Verifies all pods are in "Ready" state
+3. Monitors for pod failures
+4. Automatically rolls back if deployment fails
+5. Ensures zero-downtime during updates
 
-Access Grafana
-# Get external IP
+---
+
+## 🔄 CI/CD Pipeline (GitHub Actions)
+
+### CI Pipeline (Continuous Integration)
+
+The CI pipeline runs on every push to `main`:
+
+1. **Build Application**
+   * Checkout source code
+   * Install dependencies (`npm ci`)
+   * Build React application (`npm run build`)
+   * Run tests (`npm test`)
+
+2. **Build Docker Image**
+   * Multi-stage Docker build for optimized image size
+   * Tag image with commit SHA: `oluwaseun-portfolio-app:${{ github.sha }}`
+
+3. **Security Scanning**
+   * Trivy vulnerability scan on container image
+   * SonarCloud code quality analysis (optional)
+
+4. **Push to ACR**
+   * Authenticate with Azure Container Registry
+   * Push image to ACR: `oluwaseunportfoliodevacr.azurecr.io/oluwaseun-portfolio-app:${{ github.sha }}`
+   * Upload image tag metadata
+
+### CD Pipeline (Continuous Deployment)
+
+The CD pipeline automatically deploys after successful CI:
+
+1. **Retrieve Image Tag**
+   * Extract image tag from CI pipeline output
+   * Verify image exists in ACR
+
+2. **Update Kubernetes Manifest**
+   * Update deployment manifest with new image tag
+   * Apply rolling update strategy
+
+3. **Deploy to AKS**
+   * Get AKS cluster credentials
+   * Apply updated deployment: `kubectl set image deployment/oluwaseun-portfolio`
+   * Monitor rollout status
+
+4. **Rollout Verification**
+   * Check pod health and readiness probes
+   * Verify all pods are running and healthy
+   * Automatic rollback if deployment fails or pods become unhealthy
+   * Result: Zero-downtime deployment with automatic recovery
+
+### Pipeline Flow
+
+```
+Code Push → CI Pipeline → CD Pipeline → Production
+    ↓            ↓              ↓
+  Build      Build Image    Deploy to AKS
+  Tests      Scan Image     Verify Health
+  Lint       Push to ACR    Rollback if Failed
+```
+
+### Required Secrets
+
+* `AZURE_CREDENTIALS` - Service principal for Azure authentication
+* `AZURE_CONTAINER_REGISTRY` - ACR login server URL
+* `AZURE_RESOURCE_GROUP` - Resource group name
+* `AZURE_AKS_CLUSTER` - AKS cluster name
+* `SONAR_TOKEN` - (optional) SonarCloud authentication token
+
+---
+
+## 📊 Observability & Monitoring
+
+### Monitoring Stack Components
+
+* **Prometheus**: Metrics collection and storage
+* **Grafana**: Visualization and dashboards
+* **Alertmanager**: Alert routing and notification
+
+### Install Monitoring Stack
+
+```bash
+GRAFANA_PASSWORD="StrongPassword!" ./k8s/monitoring.sh
+```
+
+### Access Grafana
+
+```bash
 kubectl get svc -n monitoring kube-prometheus-stack-grafana
+```
 
-Grafana Login:
+**Login Credentials:**
+* Username: `admin`
+* Password: Grafana password set during install
 
-URL: http://<EXTERNAL-IP> or http://localhost:
-Username: admin
-Password: Your GRAFANA_PASSWORD
+### Metrics Collected
 
-Apply Alert Rules
-kubectl apply -f k8s/test-alert-rule.yaml
+* **Application Metrics**: Request rates, response times, error rates
+* **Kubernetes Metrics**: Pod CPU/memory usage, node health
+* **Infrastructure Metrics**: Container resource utilization
+* **Custom Metrics**: Application-specific business metrics
 
-# Verify rules
-kubectl get prometheusrules -n monitoring
-Verify Alerts Are Working
-Check Prometheus targets: kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090
-Open http://localhost: → Status → 
+### Alerting
 
-GitHub Secrets Required
-Set these in your repo: Settings → Secrets and variables → Actions
+* **Alert Rules**: Configured via PrometheusRule CRDs
+* **Notification Channels**: Email, Slack, PagerDuty
+* **Alert Conditions**: High error rates, pod failures, resource exhaustion
 
-AZURE_CREDENTIALS        # Service principal JSON (az ad sp create-for-rbac)
-AZURE_CONTAINER_REGISTRY # e.g., oluwaseunportfoliodevacr.azurecr.io
-AZURE_RESOURCE_GROUP     # e.g., oluwaseun-portfolio-dev-rg
-AZURE_AKS_CLUSTER        # e.g., oluwaseun-portfolio-dev-aks
-GMAIL_APP_PASSWORD       # (optional) Gmail app password for Alertmanager
-SONAR_TOKEN              # (optional) SonarCloud token
+### Observability Features
 
-Create Azure Service Principal
-az ad sp create-for-rbac \
-  --name "gha-aks-deploy" \
-  --role contributor \
-  --scopes /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>
-# Copy the JSON output and store as AZURE_CREDENTIALS secret
+* **Log Aggregation**: Centralized logging (via Prometheus/Loki)
+* **Distributed Tracing**: Request tracing across services (future)
+* **Health Checks**: Liveness and readiness probes
+* **Performance Monitoring**: Real-time performance metrics
 
-Pipeline Steps
-Checkout code
-Build & Test (npm)
-Build Docker image (tagged with commit SHA)
-Scan image (Trivy)
-Scan code (SonarCloud — optional)
-Push to ACR
-Get AKS credentials
-Update deployment (kubectl set image)
-Monitor rollout
-🔒 Security Best Practices
-⚠️ IMPORTANT: Never commit secrets (passwords, API keys, tokens).
+---
 
-Secrets Management
-GitHub Secrets: Store CI credentials (AZURE_CREDENTIALS, SONAR_TOKEN, etc.)
-Azure Key Vault: Store runtime secrets (SMTP password, app keys)
-Kubernetes Secrets: Created by Helm for sensitive configs
-values.yaml: Redact any credentials (use placeholders or --set overrides)
-Example: Secure SMTP Password
-Instead of storing the Gmail app password in values.yaml, create a Kubernetes secret:
+## 🔒 Security
 
-kubectl create secret generic gmail-smtp -n monitoring \
-  --from-literal=auth_password='YOUR_16_CHAR_APP_PASSWORD'
+### Security Practices Implemented
 
-  Then reference it in Helm or Alertmanager config (advanced setup — see Helm docs).
-  📁 Project Structure
+#### Secrets Management
+* **GitHub Secrets**: CI/CD credentials and tokens
+* **Azure Key Vault**: Runtime secrets and certificates
+* **Kubernetes Secrets**: Application secrets managed by Helm
+* **No Hardcoded Secrets**: All credentials externalized
 
+#### Container Security
+* **Image Scanning**: Trivy scans every Docker image for vulnerabilities
+* **Multi-stage Builds**: Minimal attack surface with optimized images
+* **Base Image Security**: Using official, regularly updated base images
+* **Non-root User**: Containers run as non-privileged user
+
+#### Code Security
+* **SonarCloud**: Static code analysis for security vulnerabilities
+* **Dependency Scanning**: npm audit for known vulnerabilities
+* **SAST**: Static Application Security Testing in CI pipeline
+
+#### Infrastructure Security
+* **RBAC**: Role-Based Access Control for Kubernetes
+* **Network Policies**: (Future) Restrict pod-to-pod communication
+* **Private ACR**: Container registry with private endpoints
+* **Managed Identity**: (Future) Replace service principals with managed identities
+
+#### Deployment Security
+* **TLS/HTTPS**: (Future) Cert-manager with Let's Encrypt
+* **Image Pull Secrets**: Secure authentication to ACR
+* **Resource Limits**: CPU and memory limits on containers
+* **Security Contexts**: Pod security policies and contexts
+
+### Security Checklist
+
+- [x] Secrets stored externally (GitHub Secrets, Key Vault)
+- [x] No credentials in source control
+- [x] Container images scanned (Trivy)
+- [x] Code quality scanning (SonarCloud)
+- [x] Kubernetes RBAC configured
+- [x] Resource limits enforced
+- [ ] Network policies implemented
+- [ ] TLS/HTTPS enabled
+- [ ] Managed Identity for authentication
+
+---
+
+## 📁 Project Structure
+
+```
 oluwaseun-portfolio/
-├── src/                          # React source code
-│   ├── components/              # React components
-│   │   ├── Hero.js
-│   │   ├── About.js
-│   │   ├── Projects.js
-│   │   ├── DevOpsJourney.js
-│   │   ├── PipelineDiagram.js
-│   │   └── Contact.js
-│   ├── App.js                   # Main App component
-│   ├── index.js                 # React entry point
-│   └── index.css                # Global styles
-├── public/                       # Static assets
-├── build/                        # Production build (generated)
-├── infra/terraform/              # Infrastructure as Code
-│   ├── main.tf                  # Root module
-│   ├── variables.tf             # Input variables
-│   ├── provider.tf              # Azure provider
-│   ├── backend.tf               # Remote state
-│   └── modules/webapp/          # AKS, ACR, RG, Key Vault, Storage
-├── k8s/                          # Kubernetes manifests
-│   ├── deployment.yml           # App deployment
-│   ├── service.yml              # LoadBalancer service
-│   ├── values.yaml              # Helm chart values (Prometheus stack)
-│   ├── test-alert-rule.yaml     # PrometheusRule with alert definitions
-│   └── monitoring.sh            # Script to deploy monitoring
-├── .github/workflows/            # GitHub Actions
-│   └── deploy.yml               # CI/CD pipeline
-├── Dockerfile                    # Multi-stage container build
-├── package.json                 # Node dependencies
-├── tailwind.config.js           # Tailwind CSS config
-├── postcss.config.js            # PostCSS config
-├── BUILD_AND_RUN.md             # Docker build/run instructions
-├── README.md                     # This file
-└── FIXES_APPLIED.md             # Project fixes & updates
+├── src/                  # React source code
+├── infra/terraform/      # Terraform IaC
+├── k8s/                  # Kubernetes manifests
+├── .github/workflows/    # CI/CD pipelines
+├── Dockerfile            # Multi-stage Docker build
+└── README.md
+```
 
-🎨 Design System
-Colors
-Navy: #0A2540 — Primary background
-Cyan: #3B82F6 — Primary accent / links
-Purple: #9333EA — Secondary accent
-Light Cyan: #E6F0FF — Text on dark
+---
 
-Typography
-Font: Inter (Google Fonts, sans-serif)
-Weights: 300, 400, 500, 600, 700, 800, 900
+## 🔮 Future Improvements
 
-Components
-Cards: Gradient background with blur + shadow
-Buttons: Gradient (primary) or outline (secondary)
-Badges: Tech stack indicators with gradient borders
+* Add NGINX Ingress Controller with HTTPS (cert-manager)
+* Implement Horizontal Pod Autoscaler (HPA)
+* Introduce GitOps with ArgoCD
+* Replace service principals with Managed Identity
+* Add end-to-end tests in CI pipeline
+* Support multiple environments (dev/staging/prod)
 
-🧪 Testing
-   npm test
+---
 
-Run linting (via ESLint in CRA):
-  npm run lint  # if configured
+## 👤 About Me
 
-📋 Common Commands Cheat Sheet
-Task	Command
-Local Dev	npm install && npm start
-Build	npm run build
-Docker Build	docker build -t oluwaseun-portfolio:local .
-Docker Run	docker run -d -p 8080:80 oluwaseun-portfolio:local
-Terraform Init	cd infra/terraform && terraform init
-Terraform Plan	terraform plan -out=tfplan
-Terraform Apply	terraform apply tfplan
-Get AKS Creds	az aks get-credentials -g <RG> -n <AKS> --overwrite-existing
-Deploy to AKS	kubectl apply -f k8s/
-Get App External IP	kubectl get svc oluwaseun-portfolio
-Deploy Monitoring	GRAFANA_PASSWORD="xxx" ./k8s/monitoring.sh
-Access Grafana	kubectl get svc -n monitoring kube-prometheus-stack-grafana
-View Logs	kubectl logs -f <pod-name>
-Describe Pod	kubectl describe pod <pod-name>
+**Oluwaseun O. Opebiyi** — Cloud Engineer & DevOps Practitioner
 
-🚀 Deployment Checklist
- Infrastructure provisioned via Terraform
- Docker image built locally and tested
- Image pushed to ACR
- Kubernetes manifests deployed to AKS
- App accessible via LoadBalancer external IP
- Prometheus + Grafana installed (monitoring.sh)
- Alert rules applied
- GitHub Actions pipeline running and deploying on commits
- Secrets stored securely (GitHub Secrets, Key Vault, not in repo)
+* LinkedIn: [https://linkedin.com/in/oluwaseun-o-opebiyi-6b91ab29](https://linkedin.com/in/oluwaseun-o-opebiyi-6b91ab29)
+* GitHub: [https://github.com/iam-oluwaseun](https://github.com/iam-oluwaseun)
+* Email: [opebiyioluwaseun@outlook.com](mailto:opebiyioluwaseun@outlook.com)
 
-📚 Documentation & Resources
-Terraform Azure Provider: https://registry.terraform.io/providers/hashicorp/azurerm/latest
-Kubernetes Official Docs: https://kubernetes.io/docs/
-Helm Package Manager: https://helm.sh/
-kube-prometheus-stack: https://github.com/prometheus-community/helm-charts
-GitHub Actions Docs: https://docs.github.com/en/actions
-React Docs: https://react.dev/
-Tailwind CSS Docs: https://tailwindcss.com/
+---
 
-🤝 Contributing
-Fork the repository
-Create a feature branch (git checkout -b feature/amazing-feature)
-Commit changes (git commit -m "feat: add amazing feature")
-Push to branch (git push origin feature/amazing-feature)
-Open a Pull Request
-📝 License
-This project is licensed under the MIT License — see the LICENSE file for details.
+⭐ If you find this project helpful, please consider starring the repository.
 
-👤 About Me
-Oluwaseun O. Opebiyi — Cloud Engineer & DevOps Practitioner
-
-🔗 LinkedIn: [linkedin.com/in/oluwaseun-o-opebiyi-6b91ab29]
-🌐 Portfolio: https://github.com/iam-oluwaseun/oluwaseun-portfolio
-📧 Contact: [opebiyioluwaseun@outlook.com]
-Last Updated: December 2025
-
-Project Status: ✅ Active — Continuously updated with latest DevOps best practices.
-
-
-
-
-
-
-
-
-
-
-
-
-
-SonarCloud enabled
+**Last Updated**: December 2025
